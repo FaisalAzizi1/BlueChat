@@ -1,19 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeviceList">
+    tools:context=".device_list">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ListView
+            android:id="@+id/paired_devices"
+            android:layout_width="363dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/available_devices"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="20dp"
+
+            android:layout_marginTop="59dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="28dp"
+            android:layout_marginBottom="10dp">
+
+        </ListView>
 
 
-    <TextView
-        android:id="@+id/device"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/divider_dialog_middle"
+            android:layout_width="300dp"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="389dp"
+            android:layout_marginEnd="20dp"
+
+            android:layout_marginRight="20dp"
+            android:src="@drawable/divider_dialog"
+            android:tint="@android:color/darker_gray" />
+
+        <ProgressBar
+            android:id="@+id/progressbar_scan"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+
+            android:layout_below="@id/divider_dialog_middle"
+            android:layout_alignParentEnd="true"
+
+            android:layout_alignParentRight="true"
+
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="0dp" />
+
+        <ListView
+            android:id="@+id/available_devices"
+            android:layout_width="wrap_content"
+            android:layout_height="370dp"
+            android:layout_below="@+id/divider_dialog_middle"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+
+            android:layout_marginTop="45dp"
+            android:layout_marginEnd="20dp"
+
+            android:layout_marginBottom="60dp">
+
+        </ListView>
+
+        <TextView
+            android:id="@+id/available__devices_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider_dialog_middle"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/r_medium"
+            android:text="Available Devices"
+            android:textColor="#000"
+            android:textSize="20dp"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:id="@+id/paired_devices_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/r_medium"
+            android:text="Paired Devices"
+            android:textColor="#000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="34dp"
+            android:layout_marginRight="34dp"
+            android:layout_marginBottom="22dp"
+            android:backgroundTint="@android:color/transparent"
+            android:clickable="true"
+            android:onClick="cancelActivity"
+            android:fontFamily="@font/r_regular"
+            android:text="Cancel"
+            android:textColor="#000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/btn_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="111dp"
+            android:layout_marginRight="111dp"
+            android:layout_marginBottom="21dp"
+            android:backgroundTint="@android:color/transparent"
+            android:clickable="true"
+            android:fontFamily="@font/r_regular"
+            android:text="Scan"
+            android:onClick="scanDevices"
+            android:textColor="#1B2E53"
+            android:textSize="20dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>
