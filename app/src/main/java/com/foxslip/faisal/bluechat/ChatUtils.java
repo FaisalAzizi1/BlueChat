@@ -48,7 +48,7 @@ public class ChatUtils {
 
     public synchronized void setState(int state) {
         this.state = state;
-        handler.obtainMessage(MainActivity.MESSAGE_STATE_CHANGED, state, -1).sendToTarget();
+        handler.obtainMessage(Chat.MESSAGE_STATE_CHANGED, state, -1).sendToTarget();
     }
 
     private synchronized void start() {
@@ -203,9 +203,9 @@ public class ChatUtils {
 
 
     private void connectionLost() {
-        Message message = handler.obtainMessage(MainActivity.MESSAGE_TOAST);
+        Message message = handler.obtainMessage(Chat.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString(MainActivity.TOAST, "Connection Lost");
+        bundle.putString(Chat.TOAST, "Connection Lost");
         message.setData(bundle);
         handler.sendMessage(message);
 
@@ -213,9 +213,9 @@ public class ChatUtils {
     }
 
     private synchronized void connectionFailed() {
-        Message message = handler.obtainMessage(MainActivity.MESSAGE_TOAST);
+        Message message = handler.obtainMessage(Chat.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString(MainActivity.TOAST, "Cant connect to the device");
+        bundle.putString(Chat.TOAST, "Cant connect to the device");
         message.setData(bundle);
         handler.sendMessage(message);
 
@@ -228,9 +228,9 @@ public class ChatUtils {
             connectThread = null;
         }
 
-        Message message = handler.obtainMessage(MainActivity.MESSAGE_DEVICE_NAME);
+        Message message = handler.obtainMessage(Chat.MESSAGE_DEVICE_NAME);
         Bundle bundle = new Bundle();
-        bundle.putString(MainActivity.DEVICE_NAME, device.getName());
+        bundle.putString(Chat.DEVICE_NAME, device.getName());
         message.setData(bundle);
         handler.sendMessage(message);
 

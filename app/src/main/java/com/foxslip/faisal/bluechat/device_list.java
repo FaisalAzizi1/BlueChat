@@ -43,7 +43,7 @@ public class device_list extends AppCompatActivity {
 
     public void cancelActivity(View view) {
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, Chat.class);
         finish();
         startActivity(intent);
     }

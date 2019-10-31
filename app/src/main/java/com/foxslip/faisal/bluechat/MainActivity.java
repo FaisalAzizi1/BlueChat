@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -25,83 +26,25 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
     private Context mConext;
     private BluetoothAdapter bluetoothAdapter;
-    private ChatUtils chatUtils;
-
-    private TextView status;
 
     //Location permision request contant
     private final int LOCATION_PERMISSION_REQUEST = 101;
 
-    private final int SELECT_DEVICE = 102;
-
-    public static final int MESSAGE_STATE_CHANGED = 0;
-    public static final int MESSAGE_READ = 1;
-    public static final int MESSAGE_WRITE = 2;
-    public static final int MESSAGE_DEVICE_NAME = 3;
-    public static final int MESSAGE_TOAST = 4;
-
-    public static final String DEVICE_NAME = "deviceName";
-    public static final String TOAST = "toast";
-
-    private String connectedDevice;
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-
-            switch (msg.what)
-            {
-                case MESSAGE_STATE_CHANGED:
-                    switch (msg.arg1)
-                    {
-                        case ChatUtils.STATE_NONE:
-                            setState("Not Connected");
-                            break;
-                        case ChatUtils.STATE_LISTEN:
-                            setState("Not Connected");
-                            break;
-                        case ChatUtils.STATE_CONNECTING:
-                            setState("Connecting...");
-                            break;
-                        case ChatUtils.STATE_CONNECTED:
-                            setState("Connected: "+connectedDevice);
-                            break;
-                    }
-                    break;
-                case MESSAGE_READ:
-                    break;
-                case MESSAGE_WRITE:
-                    break;
-                case MESSAGE_DEVICE_NAME:
-                    connectedDevice = msg.getData().getString(DEVICE_NAME);
-                    Toast.makeText(getApplicationContext(),connectedDevice,Toast.LENGTH_SHORT).show();
-                    break;
-                case MESSAGE_TOAST:
-                    Toast.makeText(getApplicationContext(),msg.getData().getString(TOAST),Toast.LENGTH_LONG);
-                    break;
-            }
-
-            return false;
-        }
-    });
-
-    private void setState(CharSequence subtitle)
-    {
-        status.setText(subtitle);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mConext = this;
-        status = (TextView)findViewById(R.id.messages_title);
-        chatUtils = new ChatUtils(mConext,handler);
+
 
         initBluetooth();
 
@@ -127,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
         {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
-                Intent intent = new Intent(mConext,device_list.class);
-                startActivityForResult(intent,SELECT_DEVICE);
+                Intent intent = new Intent(mConext,Chat.class);
+                startActivity(intent);
             }
             else
                 {
@@ -154,26 +97,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if (requestCode ==SELECT_DEVICE && resultCode == RESULT_OK)
-        {
-            String address = data.getStringExtra("deviceAddress");
-            chatUtils.connect(bluetoothAdapter.getRemoteDevice(address));
-
-        }
-
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     public void enableBluetooth(View view) {
+        if (bluetoothAdapter != null){
         if (bluetoothAdapter.isEnabled()) {
             Toast.makeText(mConext, "Already enabled", Toast.LENGTH_LONG).show();
             checkPermissions();
-            Intent intent = new Intent(mConext,device_list.class);
-            startActivityForResult(intent,SELECT_DEVICE);
+            Intent intent = new Intent(mConext,Chat.class);
+            startActivity(intent);
         } else {
             bluetoothAdapter.enable();
         }
@@ -184,14 +116,10 @@ public class MainActivity extends AppCompatActivity {
             discoveryIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,300);
             startActivity(discoveryIntent);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (chatUtils!=null){
-            chatUtils.stop();
         }
+        else
+            {
+                Toast.makeText(this,"Bluetooth Services Not Available",Toast.LENGTH_SHORT).show();
+            }
     }
 }
