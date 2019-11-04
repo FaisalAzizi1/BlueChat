@@ -43,12 +43,11 @@ public class device_list extends AppCompatActivity {
 
     public void cancelActivity(View view) {
 
-        Intent intent = new Intent(this, Chat.class);
-        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
-
-
 
     private void init()
     {
@@ -64,6 +63,19 @@ public class device_list extends AppCompatActivity {
         listAvailableDevices.setAdapter(adapterAvailableDevices);
 
         listPairedDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String info = ((TextView)view).getText().toString();
+                String address = info.substring(info.length() - 17);
+
+                Intent intent = new Intent();
+                intent.putExtra("deviceAddress",address);
+                setResult(RESULT_OK,intent);
+                finish();
+            }
+        });
+
+        listAvailableDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String info = ((TextView)view).getText().toString();
@@ -123,6 +135,10 @@ public class device_list extends AppCompatActivity {
         }
     };
 
+    public void onPause() {
+        super.onPause();
+    }
+
     public void scanDevices(View view) {
         startScan();
     }
@@ -140,5 +156,15 @@ public class device_list extends AppCompatActivity {
         }
 
         bluetoothAdapter.startDiscovery();
+    }
+
+    public void waitForConnection(View view) {
+        String info = ((TextView)view).getText().toString();
+        String address = info.substring(info.length() - 17);
+
+        Intent intent = new Intent();
+        intent.putExtra("deviceAddress","wait");
+        setResult(RESULT_OK,intent);
+        finish();
     }
 }

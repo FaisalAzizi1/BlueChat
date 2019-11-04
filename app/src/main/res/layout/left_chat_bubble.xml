@@ -9,21 +9,25 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
+        android:paddingRight="10dp"
         android:layout_marginBottom="10dp"
         android:elevation="5dp"
         android:background="@drawable/left_chat_background">
 
         <TextView
+            android:id="@+id/message_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/r_regular"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textColor="#000"
-            android:textSize="18sp"
             android:layout_marginTop="10dp"
-            android:id="@+id/message_content"
-            android:text="Hey man whats up?" />
+            android:fontFamily="@font/r_regular"
+            android:text="Hey man whats up"
+            android:textColor="#000"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/time_text"

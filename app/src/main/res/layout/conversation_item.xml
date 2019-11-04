@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/conversation_parent"
+    android:clickable="true"
+    android:elevation="10dp"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:src="@color/design_default_color_primary"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="0dp" />
+
+    <TextView
+        android:id="@+id/conversation_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/profile_image"
+        android:layout_toRightOf="@+id/profile_image"
+        android:fontFamily="@font/r_regular"
+        android:text="User Name"
+        android:textColor="#000"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/conversation_last_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/conversation_username"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/profile_image"
+        android:layout_toRightOf="@+id/profile_image"
+        android:fontFamily="@font/light"
+        android:text="Hey man"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/conversation_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginRight="20dp"
+        android:text="19/02/19 32:55" />
+</RelativeLayout>

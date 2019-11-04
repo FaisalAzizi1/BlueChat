@@ -103,15 +103,12 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             messageText = (TextView) itemView.findViewById(R.id.message_content);
             timeText = (TextView) itemView.findViewById(R.id.time_text);
 
-
         }
-
         void bind(ChatMessage message) {
             messageText.setText(message.getMessage());
 
             // Format the stored timestamp into a readable String using method.
             timeText.setText("10:32");
-
         }
     }
 }

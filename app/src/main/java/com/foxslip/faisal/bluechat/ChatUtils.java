@@ -5,12 +5,16 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -22,6 +26,7 @@ public class ChatUtils {
     private BluetoothAdapter bluetoothAdapter;
     private ConnectThread connectThread;
     private AcceptThread acceptThread;
+    private ConnectedThread connectedThread;
 
 
     private final UUID APP_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
@@ -62,12 +67,17 @@ public class ChatUtils {
             acceptThread.start();
         }
 
-
+        if (connectedThread!=null)
+        {
+            connectedThread.cancel();
+            connectedThread = null;
+        }
 
         setState(STATE_LISTEN);
     }
 
     public synchronized void stop() {
+
         if (connectThread != null) {
             connectThread.cancel();
             connectThread = null;
@@ -77,7 +87,11 @@ public class ChatUtils {
             acceptThread = null;
         }
 
-
+        if (connectedThread != null)
+        {
+            connectedThread.cancel();
+            connectedThread = null;
+        }
 
         setState(STATE_NONE);
     }
@@ -91,9 +105,24 @@ public class ChatUtils {
         connectThread = new ConnectThread(device);
         connectThread.start();
 
-
-
         setState(STATE_CONNECTING);
+    }
+
+    public void write(byte[] buffer) {
+        ConnectedThread connThread;
+
+        Log.d("MESSAGE", "write: "+ Arrays.toString(buffer));
+
+        synchronized (this) {
+
+            if (state != STATE_CONNECTED) {
+                return;
+            }
+
+            connThread = connectedThread;
+        }
+
+        connThread.write(buffer);
     }
 
     private class AcceptThread extends Thread {
@@ -198,9 +227,59 @@ public class ChatUtils {
     }
 
 
+    private class ConnectedThread extends Thread {
+        private final BluetoothSocket socket;
+        private final InputStream inputStream;
+        private final OutputStream outputStream;
 
+        public ConnectedThread(BluetoothSocket socket) {
+            this.socket = socket;
 
+            InputStream tmpIn = null;
+            OutputStream tmpOut = null;
 
+            try {
+                tmpIn = socket.getInputStream();
+                tmpOut = socket.getOutputStream();
+            } catch (IOException e) {
+            }
+
+            inputStream = tmpIn;
+            outputStream = tmpOut;
+        }
+
+        public void run() {
+            byte[] buffer = new byte[1024];
+            int bytes;
+
+            while (true){
+            try {
+                bytes = inputStream.read(buffer);
+
+                handler.obtainMessage(Chat.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+            } catch (IOException e) {
+                connectionLost();
+            }
+            }
+        }
+
+        public void write(byte[] buffer) {
+            try {
+                outputStream.write(buffer);
+                handler.obtainMessage(Chat.MESSAGE_WRITE, -1, -1, buffer).sendToTarget();
+            } catch (IOException e) {
+
+            }
+        }
+
+        public void cancel() {
+            try {
+                socket.close();
+            } catch (IOException e) {
+
+            }
+        }
+    }
 
     private void connectionLost() {
         Message message = handler.obtainMessage(Chat.MESSAGE_TOAST);
@@ -227,6 +306,14 @@ public class ChatUtils {
             connectThread.cancel();
             connectThread = null;
         }
+
+        if (connectedThread != null) {
+            connectedThread.cancel();
+            connectedThread = null;
+        }
+
+        connectedThread = new ConnectedThread(socket);
+        connectedThread.start();
 
         Message message = handler.obtainMessage(Chat.MESSAGE_DEVICE_NAME);
         Bundle bundle = new Bundle();
