@@ -6,38 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".profile_settings">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image_settings"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-
-        android:layout_marginTop="60dp"
-        android:src="@drawable/ic_launcher_background"
-        app:civ_border_color="#FF000000"
-        android:elevation="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image_settings" />
-
-
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="216dp"
+        android:layout_marginBottom="40dp"
         android:onClick="saveProfile"
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -46,5 +19,105 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username"
         app:layout_constraintVertical_bias="1.0" />
+
+
+    <ImageButton
+        android:id="@+id/btnorange"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:layout_marginTop="44dp"
+
+        android:layout_marginEnd="56dp"
+
+        android:layout_marginRight="56dp"
+        android:background="@drawable/bgorange"
+        android:elevation="7dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintVertical_bias="0.023" />
+
+    <ImageButton
+        android:id="@+id/btngreen"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@drawable/bggreen"
+        android:elevation="7dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/btnpurple"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintVertical_bias="0.021" />
+
+    <ImageButton
+        android:id="@+id/btnpurple"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="44dp"
+
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@drawable/bgpurple"
+        android:elevation="7dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/btnblue"
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintVertical_bias="0.021" />
+
+    <ImageButton
+        android:id="@+id/btnblue"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@drawable/bgblue"
+        android:elevation="7dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/btnorange"
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintVertical_bias="0.021" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="300dp"
+        android:padding="10dp"
+        android:background="@drawable/edit_background"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:ems="10"
+        android:elevation="2sp"
+        android:inputType="textPersonName"
+        android:text="Name"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image_settings" />
+
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image_settings"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+
+        android:layout_marginTop="60dp"
+        android:elevation="10dp"
+        android:src="@drawable/ic_launcher_background"
+        app:civ_border_color="#FF000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

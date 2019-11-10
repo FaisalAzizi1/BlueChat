@@ -135,7 +135,22 @@ public class device_list extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        try{
+            if(bluetoothDeviceListner!=null)
+                unregisterReceiver(bluetoothDeviceListner);
+
+        }catch(Exception e){}
+        super.onDestroy();
+    }
+
     public void onPause() {
+        try{
+            if(bluetoothDeviceListner!=null)
+                unregisterReceiver(bluetoothDeviceListner);
+
+        }catch(Exception e){}
         super.onPause();
     }
 

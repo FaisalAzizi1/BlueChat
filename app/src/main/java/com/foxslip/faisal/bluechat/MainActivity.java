@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -16,6 +17,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -38,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.w3c.dom.Text;
@@ -45,8 +48,11 @@ import org.w3c.dom.Text;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,42 +61,49 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
     private HistoryAdapter historyAdapter;
     private RecyclerView conversations_view;
-
+    String getThemeku;
+    String themeku = "";
     private List<Conversation> conversations = new ArrayList<>();
 
     //Location permision request contant
     private final int LOCATION_PERMISSION_REQUEST = 101;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mConext = this;
 
+        mConext = this;
         init();
         initBluetooth();
-
     }
-
     private void init()
     {
+
+
+
+        String currentDateTimeString = DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT).format(new Date());
+
+
         loadImageFromStorage("/data/user/0/com.foxslip.faisal.bluechat/app_imageDir/");
         DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
 
         List<ChatMessage> chatMessages= new ArrayList<ChatMessage>();
-        chatMessages.add(new ChatMessage("","12:32","hello",false));
-        chatMessages.add(new ChatMessage("","12:32","hello",true));
-        chatMessages.add(new ChatMessage("","12:32","hello",false));
-        chatMessages.add(new ChatMessage("","12:32","Hey my man",true));
 
-        Conversation conversation = new Conversation("452","12:12:12",chatMessages,"Faisal","Robina");
 
+        chatMessages.add(new ChatMessage("","12:32","Hi",true));
+        chatMessages.add(new ChatMessage("","12:32","My name is faisal azizi",false));
+        chatMessages.add(new ChatMessage("","12:32","Nice to meet you.",true));
+        chatMessages.add(new ChatMessage("","12:32","Anything i can help you with",true));
+
+        Conversation conversation = new Conversation("455544",currentDateTimeString,chatMessages,"Faisal","Mursal");
+
+        Log.d("TAAAG", "init: "+chatMessages.get(0).getMessage());
          //
-        // databaseHandler.addConveration(conversation);
+        // databaseHandler.addConveration(conversation,true);
          //Conversation conversation1 = databaseHandler.getConversation("1234");
        // Log.d("TAAG", "enableBluetooth: "+conversation1.getConversation().get(2).getTime());
-        conversations = databaseHandler.getAllConversations();
+         conversations = databaseHandler.getAllConversations();
 
 
         conversations_view = (RecyclerView)findViewById(R.id.conversations_view);
@@ -99,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
         conversations_view.setAdapter(historyAdapter);
 
     }
+
+
+
     public void initBluetooth()
     {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();

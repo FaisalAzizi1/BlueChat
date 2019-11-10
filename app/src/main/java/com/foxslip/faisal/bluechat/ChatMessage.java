@@ -1,6 +1,8 @@
 package com.foxslip.faisal.bluechat;
 
-public class ChatMessage {
+import java.io.Serializable;
+
+public class ChatMessage implements Serializable {
 
     private String id;
     private String time;

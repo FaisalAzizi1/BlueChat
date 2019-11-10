@@ -10,13 +10,17 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -30,13 +34,17 @@ public class profile_settings extends AppCompatActivity {
     private static int PICK_IMAGE_REQUEST = 1;
     private Bitmap bitmap;
     private EditText nameText;
+
+    String SHARED_PREFS = "codeTheme";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_settings);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("username", MODE_PRIVATE);
 
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         ImageView imageSelect = (ImageView) findViewById(R.id.profile_image_settings);
         nameText = (EditText)findViewById(R.id.username);
         nameText.setHint("USERNAME");

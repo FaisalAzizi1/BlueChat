@@ -2,6 +2,7 @@ package com.foxslip.faisal.bluechat;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,9 +14,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +44,10 @@ public class Chat extends AppCompatActivity {
 
     private final int SELECT_DEVICE = 102;
     private TextView status;
+    private TextView device_name;
     private EditText message_text_view;
+
+    private boolean isHistory;
 
     public static final int MESSAGE_STATE_CHANGED = 0;
     public static final int MESSAGE_READ = 1;
@@ -48,6 +57,12 @@ public class Chat extends AppCompatActivity {
 
     public static final String DEVICE_NAME = "deviceName";
     public static final String TOAST = "toast";
+
+    boolean connected;
+
+    private Conversation conversation;
+
+
 
     List<ChatMessage> messages = new ArrayList<>();
 
@@ -60,16 +75,22 @@ public class Chat extends AppCompatActivity {
                     switch (message.arg1) {
                         case ChatUtils.STATE_NONE:
                             setState("Not Connected");
+                            connected = false;
                             break;
                         case ChatUtils.STATE_LISTEN:
+                            connected = false;
                             setState("Not Connected");
+
                             break;
                         case ChatUtils.STATE_CONNECTING:
                             setState("Connecting...");
+                            connected = false;
                             break;
                         case ChatUtils.STATE_CONNECTED:
-                            chatUtils.write("Faisal Azizi".getBytes());
-                            setState("Connected: " + connectedDevice);
+                            //chatUtils.write("Faisal Azizi".getBytes());
+                            connected = true;
+                            setState("Connected");
+                            device_name.setText(connectedDevice);
                             break;
                     }
                     break;
@@ -104,6 +125,7 @@ public class Chat extends AppCompatActivity {
     private void setState(CharSequence subtitle)
     {
         status.setText(subtitle);
+
     }
 
     @Override
@@ -111,24 +133,69 @@ public class Chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+
+        isHistory = (getIntent().getSerializableExtra("conversation") == null) ?false:true;
+        conversation = (Conversation) getIntent().getSerializableExtra("conversation");
+
+        if (isHistory == true)
+        messages = conversation.getConversation();
+
         init();
-        status = (TextView)findViewById(R.id.status);
-        chatUtils = new ChatUtils(this,handler);
+
     }
-
-
 
     private void init()
     {
+        device_name = (TextView)findViewById(R.id.conversation_username);
+        final ImageView menubutton = (ImageView)findViewById(R.id.menu_button);
+        menubutton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(Chat.this, menubutton);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.chat_menu, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        if (isHistory){
+                        DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
+                        databaseHandler.deleteConversation(conversation);
+                        }
+                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                        return true;
+                    }
+                });
+
+                popup.show();//showing popup menu
+            }
+        });
+
+        status = (TextView)findViewById(R.id.status);
+        chatUtils = new ChatUtils(this,handler);
         chatbox = (RecyclerView) findViewById(R.id.chat_box);
         conversationAdapter = new ConversationAdapter(this,messages);
         chatbox.setLayoutManager(new LinearLayoutManager(this));
         chatbox.setAdapter(conversationAdapter);
         message_text_view = (EditText)findViewById(R.id.message_box_message);
 
+        if (!isHistory){
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Intent intent = new Intent(this,device_list.class);
         startActivityForResult(intent,SELECT_DEVICE);
+        }
+        else
+            {
+                status.setText("History");
+                device_name.setText(conversation.getOther());
+            }
+
     }
 
     @Override
@@ -137,7 +204,7 @@ public class Chat extends AppCompatActivity {
         if (requestCode == SELECT_DEVICE && resultCode == RESULT_OK)
         {
             String address = data.getStringExtra("deviceAddress");
-            Log.d("waiting", "onActivityResult: "+address);
+           // Log.d("waiting", "onActivityResult: "+address);
 
             if (!address.equals("wait"))
                 chatUtils.connect(bluetoothAdapter.getRemoteDevice(address));
@@ -156,12 +223,18 @@ public class Chat extends AppCompatActivity {
 
     public void sendMessage(View view) {
         String message = message_text_view.getText().toString();
-        if (!message.isEmpty()) {
+        if (!message.isEmpty() && connected) {
+            String currentTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date());
+            //messages.add(new ChatMessage("",currentTimeString,message,true));
             message_text_view.setText("");
+
             chatUtils.write(message.getBytes());
             conversationAdapter.notifyDataSetChanged();
+            chatbox.scrollToPosition(conversationAdapter.getItemCount() - 1);
         }
-        chatbox.scrollToPosition(conversationAdapter.getItemCount() - 1);
+        else{
+            Toast.makeText(this,"Device not connected..",Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void closeChat(View view) {
@@ -174,9 +247,13 @@ public class Chat extends AppCompatActivity {
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
         if (messages.size() > 0){
-        Conversation conversation = new Conversation(new Random(1000).toString(),currentDateTimeString,messages,"Faisal",connectedDevice);
-        DatabaseHandler databaseHandler = new DatabaseHandler(this);
-        databaseHandler.addConveration(conversation);
+            if (isHistory == false)
+             conversation = new Conversation(new Random(1000).toString(),currentDateTimeString,messages,"Faisal",connectedDevice);
+            else
+                conversation.setConversation(messages);
+
+             DatabaseHandler databaseHandler = new DatabaseHandler(this);
+             databaseHandler.addConveration(conversation,!isHistory);
 
         }
 
@@ -185,4 +262,6 @@ public class Chat extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
 }

@@ -1,8 +1,10 @@
 package com.foxslip.faisal.bluechat;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Conversation {
+
+public class Conversation implements Serializable {
 
     private String id;
     private String timeAndDate;

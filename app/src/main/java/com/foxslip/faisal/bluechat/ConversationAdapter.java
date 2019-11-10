@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.net.ConnectException;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -108,7 +110,8 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             messageText.setText(message.getMessage());
 
             // Format the stored timestamp into a readable String using method.
-            timeText.setText("10:32");
+            String currentTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date());
+            timeText.setText(currentTimeString);
         }
     }
 }

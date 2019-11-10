@@ -89,8 +89,10 @@ public class ChatUtils {
 
         if (connectedThread != null)
         {
+
             connectedThread.cancel();
             connectedThread = null;
+
         }
 
         setState(STATE_NONE);
@@ -219,6 +221,7 @@ public class ChatUtils {
 
         public void cancel() {
             try {
+
                 socket.close();
             } catch (IOException e) {
                 Log.e("Connect->Cancel", e.toString());
@@ -252,15 +255,25 @@ public class ChatUtils {
             byte[] buffer = new byte[1024];
             int bytes;
 
-            while (true){
-            try {
-                bytes = inputStream.read(buffer);
 
+            try {
+                while(inputStream !=null){
+                bytes = inputStream.read(buffer);
                 handler.obtainMessage(Chat.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+                }
             } catch (IOException e) {
+                try {
+                    inputStream.close();
+                    outputStream.close();
+                }catch (IOException e1)
+                {
+
+                }
+
+                e.printStackTrace();
                 connectionLost();
             }
-            }
+
         }
 
         public void write(byte[] buffer) {
@@ -268,26 +281,45 @@ public class ChatUtils {
                 outputStream.write(buffer);
                 handler.obtainMessage(Chat.MESSAGE_WRITE, -1, -1, buffer).sendToTarget();
             } catch (IOException e) {
+                try {
+                    inputStream.close();
+                    outputStream.close();
+                }catch (IOException e1)
+                {
 
+                }
+                e.printStackTrace();
             }
         }
 
         public void cancel() {
             try {
+                outputStream.close();
+                inputStream.close();
+
                 socket.close();
             } catch (IOException e) {
+                e.printStackTrace();
+                try {
+                    inputStream.close();
+                    outputStream.close();
+                }catch (IOException e1)
+                {
 
+                }
             }
         }
     }
 
     private void connectionLost() {
+        if (connectedThread != null){
+        connectedThread.cancel();
+        }
         Message message = handler.obtainMessage(Chat.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
         bundle.putString(Chat.TOAST, "Connection Lost");
         message.setData(bundle);
         handler.sendMessage(message);
-
         ChatUtils.this.start();
     }
 
@@ -297,8 +329,8 @@ public class ChatUtils {
         bundle.putString(Chat.TOAST, "Cant connect to the device");
         message.setData(bundle);
         handler.sendMessage(message);
-
         ChatUtils.this.start();
+
     }
 
     private synchronized void connected(BluetoothSocket socket, BluetoothDevice device) {

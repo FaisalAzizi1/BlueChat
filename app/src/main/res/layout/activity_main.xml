@@ -9,13 +9,14 @@
     tools:context=".MainActivity">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         app:cardBackgroundColor="@color/colorPrimaryDark"
         app:cardCornerRadius="10dp"
         android:layout_margin="10dp"
-        app:cardElevation="10dp"
+        app:cardElevation="5dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
