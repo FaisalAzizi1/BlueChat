@@ -97,7 +97,8 @@ public class Chat extends AppCompatActivity {
                 case MESSAGE_WRITE:
                     byte[] buffer1 = (byte[]) message.obj;
                     String outputBuffer = new String(buffer1);
-                    messages.add(new ChatMessage("","12:00",outputBuffer,true));
+                    String currentTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date());
+                    messages.add(new ChatMessage("",currentTimeString,outputBuffer,true));
                     Log.d("MESSAGE", "handleMessage: "+outputBuffer);
                     conversationAdapter.notifyDataSetChanged();
                     chatbox.scrollToPosition(conversationAdapter.getItemCount() - 1);
@@ -224,7 +225,7 @@ public class Chat extends AppCompatActivity {
     public void sendMessage(View view) {
         String message = message_text_view.getText().toString();
         if (!message.isEmpty() && connected) {
-            String currentTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date());
+
             //messages.add(new ChatMessage("",currentTimeString,message,true));
             message_text_view.setText("");
 

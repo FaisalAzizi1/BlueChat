@@ -174,12 +174,13 @@ public class device_list extends AppCompatActivity {
     }
 
     public void waitForConnection(View view) {
+
         String info = ((TextView)view).getText().toString();
         String address = info.substring(info.length() - 17);
-
         Intent intent = new Intent();
         intent.putExtra("deviceAddress","wait");
         setResult(RESULT_OK,intent);
         finish();
+
     }
 }

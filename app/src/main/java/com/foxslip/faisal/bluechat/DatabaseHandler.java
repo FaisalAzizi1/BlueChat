@@ -152,7 +152,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                 for (int i = 0;i<messages.size();i++)
                 {
-                    chatMessages.add(new ChatMessage("",messages.get(i),messages.get(i),(isMe.get(i).equals("ME")? true : false)));
+                    chatMessages.add(new ChatMessage("","",messages.get(i),(isMe.get(i).equals("ME")? true : false)));
                 }
 
                 Conversation conversation = new Conversation(cursor.getString(0)

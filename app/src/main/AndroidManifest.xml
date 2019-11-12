@@ -13,7 +13,6 @@
         <activity android:name=".profile_settings">
 
         </activity>
-        <activity android:name=".settings" />
         <activity android:name=".Chat" />
         <activity android:name=".device_list" />
         <activity android:name=".MainActivity">

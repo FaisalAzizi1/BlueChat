@@ -4,15 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".profile_settings">
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
+        android:background="@drawable/button_background"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:fontFamily="@font/regular"
         android:onClick="saveProfile"
+        android:padding="10dp"
         android:text="Save"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -20,6 +26,8 @@
         app:layout_constraintTop_toBottomOf="@+id/username"
         app:layout_constraintVertical_bias="1.0" />
 
+
+    <!--Your comment
 
     <ImageButton
         android:id="@+id/btnorange"
@@ -87,10 +95,12 @@
         app:layout_constraintTop_toBottomOf="@+id/username"
         app:layout_constraintVertical_bias="0.021" />
 
+-->
+
     <EditText
         android:id="@+id/username"
         android:layout_width="300dp"
-        android:padding="10dp"
+        android:padding="20sp"
         android:background="@drawable/edit_background"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
@@ -112,7 +122,7 @@
 
         android:layout_marginTop="60dp"
         android:elevation="10dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="#fff"
         app:civ_border_color="#FF000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

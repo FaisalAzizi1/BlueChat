@@ -48,6 +48,7 @@ public class profile_settings extends AppCompatActivity {
         ImageView imageSelect = (ImageView) findViewById(R.id.profile_image_settings);
         nameText = (EditText)findViewById(R.id.username);
         nameText.setHint("USERNAME");
+
         if (sharedPreferences != null)
             nameText.setText(sharedPreferences.getString("username",null));
 
@@ -133,7 +134,7 @@ public class profile_settings extends AppCompatActivity {
     public void saveProfile(View view) {
 
         saveToInternalStorage(bitmap);
-        SharedPreferences sharedPreferences = getSharedPreferences("username", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         BluetoothAdapter bluetoothAdapter = null;

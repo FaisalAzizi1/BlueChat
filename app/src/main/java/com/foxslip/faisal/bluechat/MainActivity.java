@@ -94,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
         chatMessages.add(new ChatMessage("","12:32","Hi",true));
         chatMessages.add(new ChatMessage("","12:32","My name is faisal azizi",false));
         chatMessages.add(new ChatMessage("","12:32","Nice to meet you.",true));
-        chatMessages.add(new ChatMessage("","12:32","Anything i can help you with",true));
+        chatMessages.add(new ChatMessage("","12:32","Yeah Sure",true));
 
-        Conversation conversation = new Conversation("455544",currentDateTimeString,chatMessages,"Faisal","Mursal");
+        Conversation conversation = new Conversation("454788",currentDateTimeString,chatMessages,"Faisal","Ahmad Zohal");
 
         Log.d("TAAAG", "init: "+chatMessages.get(0).getMessage());
          //

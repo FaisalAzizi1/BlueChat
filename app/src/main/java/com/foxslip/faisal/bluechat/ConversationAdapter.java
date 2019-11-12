@@ -90,8 +90,8 @@ public class ConversationAdapter extends RecyclerView.Adapter {
         void bind(ChatMessage message) {
             messageText.setText(message.getMessage());
 
-            // Format the stored timestamp into a readable String using method.
-            timeText.setText("10:13");
+            String currentTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date());
+            timeText.setText(message.getTime());
         }
     }
 
@@ -111,7 +111,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
 
             // Format the stored timestamp into a readable String using method.
             String currentTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date());
-            timeText.setText(currentTimeString);
+            timeText.setText(message.getTime());
         }
     }
 }
